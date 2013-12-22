@@ -17,7 +17,10 @@ NBuilder's other major features are:
     Extensibility: Through extension methods you can extend NBuilder's fluent interface to add custom building functionality. You can also create custom property namers globally or for specific types. 
 
 The best way of learning how to use NBuilder is to download the source and take a look at the functional tests but for some quick examples, see below.
+
 Creating Single Objects
+-----------------------
+
 Creating a single object
 
     var product = Builder<Product>.CreateNew().Build();
@@ -31,6 +34,7 @@ This will create a single Product object with default values like this:
        QuantityInStock : 1       
 
 Passing in constructor args
+---------------------------
 
     var basketItem = Builder<BasketItem>
         .CreateNew()
@@ -38,6 +42,7 @@ Passing in constructor args
         .Build();
 
 Setting property values
+-----------------------
 
     var product = Builder<Product>
                 .CreateNew()
@@ -53,6 +58,7 @@ This will give you:
        QuantityInStock : 1       
 
 Setting multiple properties
+---------------------------
 
     var product = Builder<Product>
                 .CreateNew()
@@ -74,6 +80,7 @@ You can use Do() to call methods.
                .Build();
 
 Calling a method multiple times
+-------------------------------
 
 You can call a method multiple times for all the items of a list.
 
@@ -87,11 +94,12 @@ This example adds the product to five categories.
               .Build();
 
 Creating Lists
+--------------
 
 NBuilder allows you to create lists of objects giving the properties sequential values. This automatic naming of properties can be disabled for individual properties of individual types or completely disabled if need be.
 Creating a list
 
-var products = Builder<Product>.CreateListOfSize(10).Build();
+    var products = Builder<Product>.CreateListOfSize(10).Build();
 
 This would give you:
 
@@ -113,6 +121,7 @@ This would give you:
     Description - "Description10"
 
 Setting the value of a property for every item in the list
+----------------------------------------------------------
 
     var products = Builder<Product>
                 .CreateListOfSize(10)
@@ -121,6 +130,7 @@ Setting the value of a property for every item in the list
                 .Build();
 
 Setting a value of a property for just some of the items in a list
+------------------------------------------------------------------
 
 NBuilder has several methods which allow you to declare how certain parts of the list should have their properties set or how those objects should be constructed.
 
@@ -161,6 +171,7 @@ WhereSection(x, y)
                 .Build();
 
 Calling methods on your objects
+-------------------------------
 
     var categories = Builder<Category>
                 .CreateListOfSize(10)
@@ -176,6 +187,7 @@ and
            .Build();
 
 The Pick class
+--------------
 
 The Pick class allows you to add random elements from another list.
 Picking one random item from a secondary list
@@ -189,6 +201,7 @@ Picking one random item from a secondary list
                 .Build();
 
 Picking multiple random items
+-----------------------------
 
 This would add every one of the 500 products to between 5 and 10 of 50 categories.
 
@@ -201,6 +214,7 @@ This would add every one of the 500 products to between 5 and 10 of 50 categorie
             .Build();
 
 Generators
+----------
 
 You can use generators for repeat assignments.
 Sequential generator
@@ -217,6 +231,7 @@ This would assign 10000, 11000, 12000 to Id
                .Build();
 
 Random generator
+----------------
 
     var generator = new RandomGenerator();
 
@@ -227,6 +242,7 @@ Random generator
                 .Build();
 
 Persistence
+-----------
 
 NBuilder also allows you to easily set up persistence. You do this by telling NBuilder how to persist your objects. The most convenient place to do this would be in an NUnit SetUpFixture class.
 
@@ -239,7 +255,9 @@ Once you have done this, it's simply a case of calling Persist() instead of Buil
     Builder<Product>.CreateListOfSize(100).Persist();
 
 You can do this for single objects and lists
+
 Building and persisting hierarchies
+-----------------------------------
 
 You can easily create a random hierarchy by first creating an initial list and then calling BuildHierarchy(), and passing in a specification.
 
@@ -271,6 +289,7 @@ You can even persist this hierarchy by calling PersistHierarchy() instead.
     Builder<Category>.CreateListOfSize(2500).PersistHierarchy(hierarchySpec);
 
 Configuration
+-------------
 
 NBuilder allows you to change its default behaviour using the BuilderSetup class.
 Custom persistence service
@@ -280,12 +299,14 @@ Custom persistence service
     Builder<Product>.CreateNew().Persist();
 
 Turning off automatic property naming
+-------------------------------------
 
 If you don't want properties to be automatically given values, you can simply turn it off.
 
     BuilderSetup.AutoNameProperties = false;
 
 Changing the default property namer
+-----------------------------------
 
 You can change the default property namer to use the random value property namer, or you can create your own either from scratch implementing the IPropertyNamer interface, or by extending one of the classes, for example to add support
 
@@ -306,7 +327,10 @@ If you don't want values to automatically be assigned to certain properties, you
     BuilderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
 
 Extensibility
+-------------
+
 Custom declarations
+-------------------
 
 In NBuilder nearly all of the public interface is implemented with extension methods. This of course means it's possible to add your own.
 
