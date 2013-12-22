@@ -192,13 +192,13 @@ Picking multiple random items
 
 This would add every one of the 500 products to between 5 and 10 of 50 categories.
 
-var categories = Builder<Category>.CreateListOfSize(50).Build();
+    var categories = Builder<Category>.CreateListOfSize(50).Build();
 
-            var products = Builder<Product>
-                            .CreateListOfSize(500)
-                            .WhereAll()
-                                .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5, 10).Elements).From(categories))
-                            .Build();
+    var products = Builder<Product>
+            .CreateListOfSize(500)
+            .WhereAll()
+            .Have(x => x.Categories = Pick<Category>.UniqueRandomList(With.Between(5, 10).Elements).From(categories))
+            .Build();
 
 Generators
 
@@ -207,8 +207,8 @@ Sequential generator
 
 This would assign 10000, 11000, 12000 to Id
 
-var generator = new SequentialGenerator<int> { Direction = GeneratorDirection.Ascending, Increment = 1000 };
-generator.StartingWith(10000);
+    var generator = new SequentialGenerator<int> { Direction = GeneratorDirection.Ascending, Increment = 1000 };
+    generator.StartingWith(10000);
 
     var products = Builder<Product>
                .CreateListOfSize(3)
