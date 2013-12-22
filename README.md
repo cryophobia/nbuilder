@@ -180,9 +180,9 @@ The Pick class
 The Pick class allows you to add random elements from another list.
 Picking one random item from a secondary list
 
-var children = Builder<Category>.CreateListOfSize(10).Build();
+    var children = Builder<Category>.CreateListOfSize(10).Build();
 
-var categories = Builder<Category>
+    var categories = Builder<Category>
                 .CreateListOfSize(10)
                 .WhereTheFirst(2)
                     .HaveDoneToThem(x => x.AddChild(Pick<Category>.RandomItemFrom(children)))
