@@ -1,4 +1,5 @@
 Overview of NBuilder
+====================
 
 Through a fluent, extensible interface, NBuilder allows you to rapidly create test data, automatically assigning values to properties and public fields that are of type of the built in .NET data types (int, string etc). NBuilder allows you to override for properties you are interested in using lambda expressions.
 
@@ -19,7 +20,7 @@ The best way of learning how to use NBuilder is to download the source and take 
 Creating Single Objects
 Creating a single object
 
-var product = Builder<Product>.CreateNew().Build();
+    var product = Builder<Product>.CreateNew().Build();
 
 This will create a single Product object with default values like this:
 
@@ -65,7 +66,7 @@ Calling methods
 
 You can use Do() to call methods.
 
-var child = Builder<Category>.CreateNew().Build();
+    var child = Builder<Category>.CreateNew().Build();
 
     var category = Builder<Category>
                .CreateNew()
@@ -161,7 +162,7 @@ WhereSection(x, y)
 
 Calling methods on your objects
 
-var categories = Builder<Category>
+    var categories = Builder<Category>
                 .CreateListOfSize(10)
                 .WhereTheFirst(2)
                     .HaveDoneToThem(x => x.AddChild(children[0]))
@@ -169,7 +170,7 @@ var categories = Builder<Category>
 
 and
 
-var products = Builder<Product>
+    var products = Builder<Product>
            .CreateListOfSize(10)
            .WhereAll().HaveDoneToThemForAll((product, category) => product.AddToCategory(category), categories)
            .Build();
@@ -209,7 +210,7 @@ This would assign 10000, 11000, 12000 to Id
 var generator = new SequentialGenerator<int> { Direction = GeneratorDirection.Ascending, Increment = 1000 };
 generator.StartingWith(10000);
 
-var products = Builder<Product>
+    var products = Builder<Product>
                .CreateListOfSize(3)
                .WhereAll()
                    .Have(x => x.Id = generator.Generate())
@@ -217,9 +218,9 @@ var products = Builder<Product>
 
 Random generator
 
-var generator = new RandomGenerator();
+    var generator = new RandomGenerator();
 
-            var products = Builder<Product>
+    var products = Builder<Product>
                 .CreateListOfSize(10)
                 .WhereAll()
                     .Have(x => x.PriceBeforeTax = generator.Next(50, 1000))
@@ -282,7 +283,7 @@ Turning off automatic property naming
 
 If you don't want properties to be automatically given values, you can simply turn it off.
 
-BuilderSetup.AutoNameProperties = false;
+    BuilderSetup.AutoNameProperties = false;
 
 Changing the default property namer
 
@@ -290,19 +291,19 @@ You can change the default property namer to use the random value property namer
 
 for more types.
 
-BuilderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer());
+    BuilderSetup.SetDefaultPropertyNamer(new RandomValuePropertyNamer());
 
 Adding a property namer for a specific type
 
 If, for example, you have a class that has a custom struct, NBuilder will ignore this property because it doesn't know how to set it. You could overcome this by adding a special property namer, just for Products.
 
-BuilderSetup.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil()));
+    BuilderSetup.SetPropertyNamerFor<Product>(new CustomProductPropertyNamer(new ReflectionUtil()));
 
 Disabling automatic property naming for a specific property of a specific type
 
 If you don't want values to automatically be assigned to certain properties, you can disable it like this:
 
-BuilderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
+    BuilderSetup.DisablePropertyNamingFor<Product, int>(x => x.Id);
 
 Extensibility
 Custom declarations
