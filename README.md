@@ -38,14 +38,14 @@ Passing in constructor args
 
 Setting property values
 
-var product = Builder<Product>
+    var product = Builder<Product>
                 .CreateNew()
                     .With(x => x.Description = "A custom description here")
                 .Build();
 
 This will give you:
 
-   Product:
+    Product:
        Id              : 1
        Title           : "Title1"
        Description     : "A custom description here"
@@ -53,7 +53,7 @@ This will give you:
 
 Setting multiple properties
 
-var product = Builder<Product>
+    var product = Builder<Product>
                 .CreateNew()
                 .With(x => x.Title = "Special title")
                 .And(x => x.Description = "Special description") 
@@ -67,7 +67,7 @@ You can use Do() to call methods.
 
 var child = Builder<Category>.CreateNew().Build();
 
-var category = Builder<Category>
+    var category = Builder<Category>
                .CreateNew()
                .Do(x => x.AddChild(child))
                .Build();
@@ -80,7 +80,7 @@ This example adds the product to five categories.
 
 var categories = Builder<Category>.CreateListOfSize(5).Build();
 
-var product = Builder<Product>
+    var product = Builder<Product>
               .CreateNew()
               .DoForAll( (prod, cat) => prod.AddToCategory(cat), categories)
               .Build();
@@ -94,26 +94,26 @@ var products = Builder<Product>.CreateListOfSize(10).Build();
 
 This would give you:
 
-products[0]:
-   Id - 1
-   Title - "Title1"
-   Description - "Description1"
+    products[0]:
+    Id - 1
+    Title - "Title1"
+    Description - "Description1"
 
-products[1]:
-   Id - 2
-   Title - "Title2"
-   Description - "Description2"
+    products[1]:
+    Id - 2
+    Title - "Title2"
+    Description - "Description2"
 
-...
+    ...
 
-products[9]
-   Id - 10
-   Title - "Title10"
-   Description - "Description10"
+    products[9]
+    Id - 10
+    Title - "Title10"
+    Description - "Description10"
 
 Setting the value of a property for every item in the list
 
-var products = Builder<Product>
+    var products = Builder<Product>
                 .CreateListOfSize(10)
                 .WhereAll()
                     .Have(x => x.Title = "A special title")
@@ -125,7 +125,7 @@ NBuilder has several methods which allow you to declare how certain parts of the
 
 WhereTheFirst(x) & AndTheNext(x)
 
-var items = Builder<BasketItem>
+    var items = Builder<BasketItem>
                 .CreateListOfSize(4)
                 .WhereTheFirst(2)
                     .AreConstructedWith(arg1, arg2, arg3)
@@ -135,7 +135,7 @@ var items = Builder<BasketItem>
 
 WhereTheLast(x) & AndThePrevious(x)
 
-var list = Builder<Product>
+    var list = Builder<Product>
                 .CreateListOfSize(30)
                 .WhereTheLast(10)
                     .Have(x => x.Title = "Special Title 1")
@@ -145,7 +145,7 @@ var list = Builder<Product>
 
 WhereRandom(x)
 
-var products = Builder<Product>.CreateListOfSize(10)
+    var products = Builder<Product>.CreateListOfSize(10)
                 .WhereRandom(5)
                     .Have(x => x.Description = specialdescription)
                     .And(x => x.PriceBeforeTax = specialPrice)
@@ -153,7 +153,7 @@ var products = Builder<Product>.CreateListOfSize(10)
 
 WhereSection(x, y)
 
-var list = Builder<Product>
+    var list = Builder<Product>
                 .CreateListOfSize(30)
                 .WhereSection(12, 14)
                     .Have(x => x.Title = "Special Title 2")
@@ -229,20 +229,20 @@ Persistence
 
 NBuilder also allows you to easily set up persistence. You do this by telling NBuilder how to persist your objects. The most convenient place to do this would be in an NUnit SetUpFixture class.
 
-var repository = new ProductRepository();
+    var repository = new ProductRepository();
 
-BuilderSetup.SetPersistenceCreateMethod<IList<Product>>(repository.CreateAll);
+    BuilderSetup.SetPersistenceCreateMethod<IList<Product>>(repository.CreateAll);
 
 Once you have done this, it's simply a case of calling Persist() instead of Build():
 
-Builder<Product>.CreateListOfSize(100).Persist();
+    Builder<Product>.CreateListOfSize(100).Persist();
 
 You can do this for single objects and lists
 Building and persisting hierarchies
 
 You can easily create a random hierarchy by first creating an initial list and then calling BuildHierarchy(), and passing in a specification.
 
-var hierarchySpec = Builder<HierarchySpec<Category>>.CreateNew()
+    var hierarchySpec = Builder<HierarchySpec<Category>>.CreateNew()
                 .With(x => x.AddMethod = (parent, child) => parent.AddChild(child))
                 .With(x => x.Depth = 5)
                 .With(x => x.MaximumChildren = 10)
@@ -254,29 +254,29 @@ var hierarchySpec = Builder<HierarchySpec<Category>>.CreateNew()
 
 This will create a category tree and by supplying a naming method, will even name your categories with their path in the tree. For example:
 
-  Category - Title = "1"
-      Category - Title = "1.1"
-      Category - Title = "1.2"
-  Category - Title = "2"
-      Category - Title = "2.1"
-          Category - Title = "2.1.1"
-      Category - Title = "2.2"
-      Category - Title = "2.3"
+    Category - Title = "1"
+        Category - Title = "1.1"
+        Category - Title = "1.2"
+    Category - Title = "2"
+        Category - Title = "2.1"
+            Category - Title = "2.1.1"
+        Category - Title = "2.2"
+        Category - Title = "2.3"
 
 This allows you to easily identify your hierarchical object's position in relation to the whole hierarchy.
 
 You can even persist this hierarchy by calling PersistHierarchy() instead.
 
-Builder<Category>.CreateListOfSize(2500).PersistHierarchy(hierarchySpec);
+    Builder<Category>.CreateListOfSize(2500).PersistHierarchy(hierarchySpec);
 
 Configuration
 
 NBuilder allows you to change its default behaviour using the BuilderSetup class.
 Custom persistence service
 
-BuilderSetup.SetPersistenceService(new MyCustomPersistenceService());
+    BuilderSetup.SetPersistenceService(new MyCustomPersistenceService());
 
-Builder<Product>.CreateNew().Persist();
+    Builder<Product>.CreateNew().Persist();
 
 Turning off automatic property naming
 
@@ -322,34 +322,34 @@ For example say if rather than saying:
 
 You could instead create an extension method:
 
-public static IOperable<Product> HaveLongTitles(this IOperable<Product> operable)
-{
-    ((IDeclaration<Product>) operable).ObjectBuilder.With(x => x.Title = "12345....[LongString].....12345");
+    public static IOperable<Product> HaveLongTitles(this IOperable<Product> operable)
+    {
+        ((IDeclaration<Product>) operable).ObjectBuilder.With(x => x.Title = "12345....[LongString].....12345");
     return operable;
-}
+    }
 
 Giving you the ability to say:
 
-Builder<Product>
-    .CreateListOfSize(10)
-    .WhereAll()
-        .HaveLongTitles()
-    .Build();
+    Builder<Product>
+        .CreateListOfSize(10)
+        .WhereAll()
+            .HaveLongTitles()
+        .Build();
 
 You could of course make it even more succinct by adding an extension method to IListBuilder<Product>
 
-public static IListBuilder<Product> WhereAllHaveLongTitles(this IListBuilder<Product> listBuilder)
-{
-    var listBuilderImpl = (IListBuilderImpl<Product>) listBuilder;
-    var declaration = new GlobalDeclaration<Product>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder());
-    declaration.Have(x => x.Title = "12345....[LongString].....12345");
+    public static IListBuilder<Product> WhereAllHaveLongTitles(this IListBuilder<Product> listBuilder)
+    {
+        var listBuilderImpl = (IListBuilderImpl<Product>) listBuilder;
+        var declaration = new GlobalDeclaration<Product>(listBuilderImpl, listBuilderImpl.CreateObjectBuilder());
+        declaration.Have(x => x.Title = "12345....[LongString].....12345");
 
-    return declaration;
-}
+        return declaration;
+    }
 
 This would allow you to say:
 
-Builder<Product>.CreateListOfSize(10).WhereAllHaveLongTitles();
+    Builder<Product>.CreateListOfSize(10).WhereAllHaveLongTitles();
 
 For more examples, please check the functional tests
 
