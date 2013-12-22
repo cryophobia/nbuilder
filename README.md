@@ -79,7 +79,7 @@ You can call a method multiple times for all the items of a list.
 
 This example adds the product to five categories.
 
-var categories = Builder<Category>.CreateListOfSize(5).Build();
+    var categories = Builder<Category>.CreateListOfSize(5).Build();
 
     var product = Builder<Product>
               .CreateNew()
